@@ -3,6 +3,6 @@ Enterprise n8n automation system that processes emails, identifies VIP customers
 
 Want to transform your support process?
 I’m giving away the full automation workflow for free!
-Email me at spiliossp@gmail.com
+Email me at sphliossp@gmail.com
  with the subject:
 "Email Automation System" and you’ll receive the entire setup instantly.
