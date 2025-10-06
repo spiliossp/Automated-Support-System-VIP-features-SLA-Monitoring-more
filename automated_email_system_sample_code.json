@@ -1,0 +1,88 @@
+{
+  "name": "TechFlow Email Support System_v2",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {
+          "labelIds": [
+            "INBOX"
+          ],
+          "q": "Test Support",
+          "sender": "spiliossp@hotmail.com"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1424,
+        400
+      ],
+      "id": "5225a591-6600-448c-8431-5b127e742a67",
+      "name": "Receive Support Issue",
+      "notesInFlow": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "Gmail account"
+        }
+      },
+      "notes": "Triggered when receiving a Gmail with Subject prefix: test support "
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Receive Support Issue').item.json.From }}",
+        "subject": "={{ $('Receive Support Issue').item.json.Subject }}",
+        "message": "=Thank you for contacting our support team!  We have received your message and created a support ticket for you. Ticket ID: {{ $('Receive Support Issue').item.json.id }}. Our team will respond to your inquiry within 24 hours.  Best regards, Customer Support Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -176,
+        -64
+      ],
+      "id": "271d85c5-3638-463f-affe-9ea15aab823c",
+      "name": "Send Verification Gmail",
+      "webhookId": "c3fc79cc-798e-47d5-9c2a-a80113c1decc",
+      "alwaysOutputData": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "Gmail account"
+        }
+      },
+      "disabled": true,
+      "notes": "Send verification Gmail to the user, in order to inform him that we received his ticket."
+    },
+    {
+      "parameters": {
+        "toRecipients": "={{ $('Loop Over Items').item.json.From.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}/)?.[0] || $('Loop Over Items').item.json.From }}",
+        "subject": "=Re: {{ $('Loop Over Items').item.json.Subject }}",
+        "bodyContent": "={{ $json.output.response_message }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        128
+      ],
+      "id": "37f07e60-9ad8-4be7-90cb-5a219c2ddb61",
+      "name": "Send Verification Email",
+      "webhookId": "f2104db5-e7c6-4ca4-a099-5ad40621a171",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "",
+          "name": "Microsoft Outlook account"
+        }
+      },
+      "notes": "Send verification Email to the user, in order to inform him that we received his ticket."
+    }]
+}
